@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{ layout/layout }">
+
+<div layout:fragment="content">
+	<form id = "formModify" enctype="multipart/form-data">
+	<section class="container">
+		<div class="WritngWrap">
+			<div class="WritngHeader">
+				<h2 class="title">
+					수정 페이지
+						<span>
+                        <button class="btn btn-success"  id = "btnModify"  style = "float : right">수정</button>
+                    </span>
+				</h2>
+			</div>
+		</div>
+		<hr>
+		<div class="WritngContainer">
+			<div class="Writngeditor">
+				<div class="ArticleWritingTitle">
+					<div class="row">
+						<div class="column_title">
+							<div class="FormSelectBox menu_candidates_selectbox">
+								<div class="FormSelectButton">
+									<input
+                                        class="form-select form-select-lg mb-3 form-control mx-1"
+                                        aria-label=".form-select-lg example" th:value="${ post.category }"
+                                        style="width: 580px; font-size: 15px;" readonly />
+											<div class="row">
+					                    <div style="display: none">
+												<input id="id" name="id" class="form-control" th:value="${post.id}" readonly />
+										</div>									
+										<div class="FlexableTextArea">
+											<textarea class="textarea_input form-control mx-3" id="title" name="title" 
+												style="width: 1100px; height: 40px; font-size: 15px;" th:text = "${post.title}" 
+												autofocus placeholder="제목을 입력하세요."></textarea>
+										</div>
+										<div class="FlexableTextArea my-3">
+											<textarea class="textarea_input form-control mx-3" id="content"  name="content" 
+											style="width: 1100px; height: 500px; font-size: 15px;" th:text = "${post.content}"  
+											autofocus placeholder="내용을 입력하세요."></textarea>
+										</div>
+										<div class="my-2 mx-3">
+											<label for="author" class="form-label"  >작성자</label> 
+											<input id="author" class="form-control"  type="text" name="author" th:value="${post.author}" readOnly />
+											<a>[[${ #temporals.format(post.modifiedTime, 'yyyy-MM-dd') }]]</a>
+										</div>
+										<hr/>
+                                        <div class="my-1 form-group row" style="float : right;">
+                                        	<label for="inputFile" class="col-sm-3 form-label">첨부 파일</label>
+                                            <div class="custom-file" id="inputFile">
+                                                    <input name="file" type="file" class="custom-file-input" id="customFile" />
+                                                    <label class="custom-file-label form-label" for="customFile">파일을 선택해 주세요.</label>
+                                            </div>
+                                       </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	</form>
+</div>
+	<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+	<script layout:fragment="script">
+	 const formModify = document.querySelector('#formModify');
+	    // 수정 완료 버튼 찾아서 이벤트 리스너 등록.
+	    const btnUpdate = document.querySelector('#btnModify');
+	    btnUpdate.addEventListener('click', function () {
+	    	const title = document.querySelector('#title').value;
+	    	const content = document.querySelector('#content').value;
+	    	if (title == '' || content == '') {
+	    		alert('제목과 내용은 반드시 입력.');
+	    		return;
+	    	}
+	    	
+	    	const result = confirm('수정?');
+	    	if (result) {
+	    		formModify.action = '/view/update';
+	    		formModify.method = 'post';
+	    		formModify.submit();
+	    	}
+	    });
+	    
+	    $('.custom-file-input').on('change', function () {
+            var fileName = $(this).val().split('\\').pop();
+            $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
+          });
+	</script>
+</html>

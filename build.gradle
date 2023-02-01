@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8' // 자바 버전 호환성.
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    // Thymeleaf에 layout 기능을 추가하기 위해서. // .thymeleaf: 까지가 groupid.
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+    
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    
+    // Thymeleaf의 Spring Security 확장 기능.
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    
+    // Spring Security Test
+    testImplementation 'org.springframework.security:spring-security-test'
+    
+    // JSoup
+    implementation 'org.jsoup:jsoup:1.14.2'
+    
+    // Robot Captcha 부분
+    implementation 'javax.xml.bind:jaxb-api'
+    implementation 'cn.apiclub.tool:simplecaptcha:1.2.2'
+    
+    // Java Mail Sender
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    
+    // apache
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

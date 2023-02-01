@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{ layout/layout }">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" th:href="@{ /css/slider2.css }">
+<link rel="stylesheet" th:href="@{ /css/style.css } ">
+
+<style>
+body {
+  background: #1E1930;
+  color: #D2D1D5;
+}
+tr.leagueTable:nth-child(even) {
+  background-color: #2e2649;
+}
+tr.leagueTable:nth-child(odd) {
+  background-color: #423b5b;
+}
+th.leagueTable {
+  background-color: #342F44;
+  color: white;
+}
+.noBorder {
+    border:none !important;
+}
+</style>
+</head>
+<body>
+    <!-- Begin Page Content -->
+    <div layout:fragment="content">
+        <div class="container-fluid">
+
+            <!-- Content Row -->
+            <div class="row">
+                
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div
+                        class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div
+                                class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div
+                                        class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        <h3>득점 기록</h3></div>
+                                        
+                                    <div>
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>순위</th>
+                                                    <th>선수</th>
+                                                    <th>골</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td><h10 th:utext="${ scoreName0 }"></h10></td>
+                                                    <td><h10 th:utext="${ scoreRecord0 }"></h10></td>
+                                               </tr>
+                                               <tr>
+                                                    <td>2</td>
+                                                    <td><h10 th:utext="${ scoreName1 }"></h10></td>
+                                                    <td><h10 th:utext="${ scoreRecord1 }"></h10></td>
+                                               </tr>
+                                               <tr>
+                                                    <td>3</td>
+                                                    <td><h10 th:utext="${ scoreName2 }"></h10></td>
+                                                    <td><h10 th:utext="${ scoreRecord2 }"></h10></td>
+                                               </tr>
+                                               <tr>
+                                                    <td>4</td>
+                                                    <td><h10 th:utext="${ scoreName3 }"></h10></td>
+                                                    <td><h10 th:utext="${ scoreRecord3 }"></h10></td>
+                                               </tr>
+                                               <tr>
+                                                    <td>5</td>
+                                                    <td><h10 th:utext="${ scoreName4 }"></h10></td>
+                                                    <td><h10 th:utext="${ scoreRecord4 }"></h10></td>
+                                               </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            <h3>축구 뉴스</h3>
+                                            </div>
+                            <div class="slider">
+                                <input type="radio" name="slide" id="slide1"
+                                    checked> <input type="radio"
+                                    name="slide" id="slide2"> <input
+                                    type="radio" name="slide" id="slide3">
+                                <input type="radio" name="slide" id="slide4">
+                                <ul id="imgholder" class="imgs">
+                                    <li><h10 th:utext="${ newsTitle1 }"></h10>
+                                    <!--     <h20 th:text="${ newsContent0 }"></h20>--> 
+                                         <img th:src="${ newsImg1 }"
+                                        alt="group table"
+                                        class="img-responsive img-thumbnail">
+                                    </li>
+    
+                                    <li><h10 th:utext="${ newsTitle2 }"></h10>
+                                     <!--    <h20 th:text="${ newsContent1 }"></h20> --> 
+                                        <img th:src="${ newsImg2 }"
+                                        alt="group table"
+                                        class="img-responsive img-thumbnail"></li>
+                                    <li><h10 th:utext="${ newsTitle3 }"></h10>
+                                        <!--    <h20 th:text="${ newsContent1 }"></h20> --> 
+                                        <img th:src="${ newsImg3 }"
+                                        alt="group table"
+                                        class="img-responsive img-thumbnail"></li>
+                                    <li><h10 th:utext="${ newsTitle4 }"></h10> 
+                                        <!--    <h20 th:text="${ newsContent1 }"></h20> --> 
+                                        <img th:src="${ newsImg4 }"
+                                        alt="group table"
+                                        class="img-responsive img-thumbnail"></li>
+                                </ul>
+                                <div class="bullets">
+                                    <label for="slide1">&nbsp;</label> <label
+                                        for="slide2">&nbsp;</label> <label
+                                        for="slide3">&nbsp;</label> <label
+                                        for="slide4">&nbsp;</label>
+                                </div>
+                            </div>
+                            <!-- 슬라이드 컨텐트 -->
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Requests Card Example -->
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div
+                        class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div
+                                class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div
+                                        class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        <h3>이적소식</h3></div>
+                                    <div
+                                        class="h5 mb-0 font-weight-bold text-gray-800">
+                                        
+                                            <img th:src="${ transferImage0 }" alt="group table" class="img-responsive img-thumbnail">
+                                            </hr>
+                                            <a th:href="${ transferLink1 }">
+                                            
+                                            <div th:text="${ transferTitle0 }"></div>
+                                            </a> 
+                                            
+                                        </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Row -->
+
+            <div class="row">
+
+                <!-- Area Chart -->
+                <div class="col-xl-5 col-lg-4">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6
+                                class="m-0 font-weight-bold text-primary">주요
+                                일정표</h6>
+                            <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#"
+                                    role="button" id="dropdownMenuLink"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"> <i
+                                    class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div
+                                    class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                    aria-labelledby="dropdownMenuLink">
+                                    <div class="dropdown-header">Dropdown
+                                        Header:</div>
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another
+                                        action</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Something
+                                        else here</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div>
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    <div class="row"> 
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i> 
+                                        <h3> 경기일정  </h3>  
+                                        <h3 th:utext="${ plDate0 }"> </h3></div>
+                                    
+                                    </div> 
+                                    <div>
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>시간</th>
+                                                    <th>홈팀</th>
+                                                    <th>어웨이 팀</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><h10 th:utext="${ matchTime0 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture0 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture1 }"></h10></td>
+                                               </tr>
+                                               <tr>
+                                                    <td><h10 th:utext="${ matchTime1 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture2}"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture3 }"></h10></td>
+                                               </tr>
+                                               <tr>
+                                                    <td><h10 th:utext="${ matchTime2 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture4 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture5 }"></h10></td>
+                                               </tr>
+                                               <tr>
+                                                    <td><h10 th:utext="${ matchTime3 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture6 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture7 }"></h10></td>
+                                               </tr>
+                                               <tr>
+                                                    <td><h10 th:utext="${ matchTime4 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture8 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture9 }"></h10></td>
+                                               </tr>
+                                               <tr>
+                                                    <td><h10 th:utext="${ matchTime5 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture10 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture11 }"></h10></td>
+                                               </tr>
+                                              <!--   <tr>
+                                                    <td><h10 th:utext="${ matchTime6 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture12 }"></h10></td>
+                                                    <td><h10 th:utext="${ plLeagueFixture13 }"></h10></td>
+                                               </tr>-->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 시작 -->
+                <div class="col-xl-6 col-lg-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">조회수 베스트 게시글</h6>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>번호</th>
+                                            <th>제목</th>
+                                            <th>게시판</th>
+                                            <th>작성시간</th>
+                                            <th>조회수</th>
+                                            <th>좋아요</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="post : ${ list }">
+                                            <td th:text="${ post.id }"></td>
+                                            <td><a th:href="@{ /view/detail?id={id} (id = ${ post.id }) }"
+                                                th:text="${ post.title }"></a></td>
+                                            <td th:text="${ post.category }"></td>
+                                            <td
+                                                th:text="${ #temporals.format(post.modifiedTime, 'yyyy-MM-dd') }"></td>
+                                            <td th:text="${ post.clickCount }"></td>
+                                            <td th:text="${ post.likeCount }"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+                
+                <!--  끝 -->
+                <div class="table-responsive">
+                    <table class="table" width = "500">
+                      <thead>
+                        <tr class ="leagueTable">
+                          <th class ="leagueTable" scope="col" style="width:5%" >순위</th>
+                          <th class ="leagueTable" scope="col" >팀</th>
+                          <th class ="leagueTable" scope="col"  >경기수</th>
+                          <th class ="leagueTable" scope="col" >승리</th>
+                          <th class ="leagueTable" scope="col" >무승부</th>
+                          <th class ="leagueTable" scope="col" >패배</th>
+                          <th class ="leagueTable" scope="col" >승점</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <tr class ="leagueTable">
+                          <td class="noBorder">1</td>
+                          <td class="noBorder"><span th:text="${ plLeagueTable0 }"></span></td>
+                          <td class="noBorder"><span th:text="${ playedGames0 }"></span></td>
+                          <td class="noBorder"><span th:text="${ wonGames0 }"></span></td>
+                          <td class="noBorder"><span th:text="${ drawGames0 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamesLost0 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamePoints0 }"></span></td>
+                        </tr>
+                        <tr class ="leagueTable">
+                          <td class="noBorder">2</td>
+                          <td class="noBorder"><span th:text="${ plLeagueTable1 }"></span></td>
+                          <td class="noBorder"><span th:text="${ playedGames1 }"></span></td>
+                          <td class="noBorder"><span th:text="${ wonGames1 }"></span></td>
+                          <td class="noBorder"><span th:text="${ drawGames1 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamesLost1 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamePoints1 }"></span></td>
+                        </tr>
+                        <tr class ="leagueTable">
+                          <td class="noBorder">3</td>
+                          <td class="noBorder"><span th:text="${ plLeagueTable2 }"></span></td>
+                          <td class="noBorder"><span th:text="${ playedGames2 }"></span></td>
+                          <td class="noBorder"><span th:text="${ wonGames2 }"></span></td>
+                          <td class="noBorder"><span th:text="${ drawGames2 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamesLost2 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamePoints2 }"></span></td>
+                        </tr>
+                        <tr class ="leagueTable">
+                          <td class="noBorder">4</td>
+                          <td class="noBorder"><span th:text="${ plLeagueTable3 }"></span></td>
+                          <td class="noBorder"><span th:text="${ playedGames3 }"></span></td>
+                          <td class="noBorder"><span th:text="${ wonGames3 }"></span></td>
+                          <td class="noBorder"><span th:text="${ drawGames3 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamesLost3 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamePoints3 }"></span></td>
+                        </tr>
+                        <tr class ="leagueTable">
+                          <td class="noBorder">5</td>
+                          <td class="noBorder"><span th:text="${ plLeagueTable4 }"></span></td>
+                          <td class="noBorder"><span th:text="${ playedGames4 }"></span></td>
+                          <td class="noBorder"><span th:text="${ wonGames4 }"></span></td>
+                          <td class="noBorder"><span th:text="${ drawGames4 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamesLost4 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamePoints4 }"></span></td>
+                        </tr>
+                        <tr class ="leagueTable">
+                          <td class="noBorder">6</td>
+                          <td class="noBorder"><span th:text="${ plLeagueTable5 }"></span></td>
+                          <td class="noBorder"><span th:text="${ playedGames5 }"></span></td>
+                          <td class="noBorder"><span th:text="${ wonGames5 }"></span></td>
+                          <td class="noBorder"><span th:text="${ drawGames5 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamesLost5 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamePoints5 }"></span></td>
+                        </tr>
+                        <tr class ="leagueTable">
+                          <td class="noBorder">7</td>
+                          <td class="noBorder"><span th:text="${ plLeagueTable6 }"></span></td>
+                          <td class="noBorder"><span th:text="${ playedGames6 }"></span></td>
+                          <td class="noBorder"><span th:text="${ wonGames6 }"></span></td>
+                          <td class="noBorder"><span th:text="${ drawGames6 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamesLost6 }"></span></td>
+                          <td class="noBorder"><span th:text="${ gamePoints6 }"></span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+            </div>
+            <!--End of Row -->
+        <div id="createModal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modalMessage">Modal 메시지</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnClose" type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>   
+
+        </div>
+    </div>
+
+    <!-- /.container-fluid -->
+<script th:src="${js/slideShow.js}"></script>
+<script layout:fragment="script" th:inline="javascript">
+    const modalMessage = document.querySelector('#modalMessage');
+    const createModal = document.querySelector('#createModal');
+    const modal = new bootstrap.Modal(createModal);
+    
+    function createAndShowModal(msg) {
+        modalMessage.innerHTML = msg;
+        modal.show();
+    }
+    
+    const deletedPostId = [[ ${deletedId} ]];
+    if (deletedPostId) { 
+        // redirect attribute가 있는 경우
+        createAndShowModal('회원(#' + deletedPostId + ') 탈퇴 성공');
+    }
+    
+     const btnClose = document.querySelector('#btnClose');
+     btnClose.addEventListener('click', function(){
+            modal.hide();
+        });
+        
+</script>
+</body>
+</html>

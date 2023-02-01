@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{ layout/layout }">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+    content="width=device-width, height=device-height, 
+                         minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">     
+
+</head>
+
+<div layout:fragment="content">
+
+	<section class="container">
+
+		<div class="WritngWrap">
+			<div class="WritngHeader">
+				<h2 class="title" style="display: inline-block;">상세보기</h2>
+				<div th:if="${ post.author } == ${ #authentication.name }" style="display: inline; float: right">
+					<button class="btn btn-outline-danger" id="btnDelete"
+						>삭제</button>
+					<button class="btn btn-outline-success" id="btnUpdate" 
+						>수정</button>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="WritngContainer">
+			<div class="Writngeditor">
+				<div class="ArticleWritingTitle">
+					<div class="row">
+						<div class="column_title">
+							<div class="FormSelectBox menu_candidates_selectbox">
+								<div class="FormSelectButton">
+									<input
+                                        class="form-select form-select-lg mb-3 form-control mx-1"
+                                        aria-label=".form-select-lg example" th:value="${ post.category }"
+                                        style="width: 580px; font-size: 15px;" readonly />
+									<div class="row">
+										<form id="formModify">
+											<div style="display: none">
+												<input id="id" name="id" class="form-control" th:value="${ post.id }" readonly />
+											</div>
+											<div class="FlexableTextArea">
+												<textarea class="textarea_input form-control mx-3" id="title" name="title"
+													style="width: 1100px; height: 40px; font-size: 15px;" th:text="${post.title}" readonly></textarea>
+											</div>
+											<div class="FlexableTextArea my-3">
+												<textarea class="textarea_input form-control mx-3" id="content" name="content"
+													style="width: 1100px; height: 500px; font-size: 15px;" th:text="${post.content}" readonly></textarea>
+											</div>
+											<div class="my-2 mx-3">
+                                                <label for="author" class="form-label">작성자</label> 
+                                                <input id="author" class="form-control" type="text" name="author" th:value="${post.author}" readOnly /> 
+                                                <a>[[${#temporals.format(post.modifiedTime, 'yyyy-MM-dd HH:MM:ss')}]]</a>
+                                            </div>
+                                                <input type="hidden" name=category th:value="${post.category}" />
+                                            <div th:if="${post.filesId != null}">
+                                                <strong>첨부파일 : </strong>
+                                                    <a class="card-text" th:href="@{'/view/download/' + ${post.filesId}}" th:text="${filename}"></a>
+                                          </div>
+										</form>
+										<div class="voting"
+											style="margin-left: auto; margin-right: auto">
+											<button class="likebtn" id="likebtn" name="likeCount"
+												style="background: none; border: none">
+												<i class="fa fa-thumbs-up"></i>
+											</button>
+											<input type="number" id="input1" th:value="${post.likeCount}"
+												style="width: 50px; pointer-events: none; border: none; background: none" />
+											<button id="dislikebtn" name="dislikeCount"
+												style="background: none; border: none">
+												<i class="fa fa-thumbs-down"></i>
+											</button>
+											<input type="number" id="input2" th:value="${post.dislikeCount}"
+												style="width: 50px; pointer-events: none; border: none; background: none" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+    </section>
+    
+    <hr />
+    <div class="card my-4">
+        <div class="card-body row">
+            <div class="col-2">
+                <input type="text" class="form-control" id="writer" th:value="${ #authentication.name }" readonly/>
+            </div>
+            <div class="col-8">
+                <textarea rows="1" class="form-control" id="replyText" placeholder="댓글 작성"></textarea>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-outline-secondary" id="btnReplyRegister">등록</button>
+            </div>
+        </div>
+    </div>
+    <!-- 댓글 리스트 영역 -->
+    <hr />
+    <div id="replies"></div>
+   
+    
+
+    <!-- 수정 성공 modal -->
+    <div id="createModal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modalMessage">Modal 메시지</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnClose" type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">확인</button>
+                    </div>
+                </div>
+            </div>
+    </div> <!-- modal end -->
+    
+</div><!-- layout:fragment="content" end -->
+<th:block layout:fragment="script" th:inline="javascript">
+    <!-- Ajax를 사용하기 위한 axios 자바스크립트 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+    const loginUser = [[ ${ #authentication.name } ]];
+    </script>
+    
+    <script>
+    const formModify = document.querySelector('#formModify');
+    
+    const btnDelete = document.querySelector('#btnDelete');
+    btnDelete.addEventListener('click', function () {
+        const result = confirm('정말 삭제하시겠습니까?');
+        if (result) {
+            formModify.action = '/view/delete';
+            formModify.method = 'post';
+            formModify.submit();
+        }
+    });
+    const btnUpdate = document.querySelector('#btnUpdate');
+    btnUpdate.addEventListener('click', function () {
+        const result = confirm('수정하시겠습니까?');
+        if (result) {
+            formModify.action = '/view/modify';
+            formModify.method = 'get';
+            formModify.submit();
+        }
+    });
+    
+    const modalMessage = document.querySelector('#modalMessage');
+    const createModal = document.querySelector('#createModal');
+    const modal = new bootstrap.Modal(createModal);
+    
+    function createAndShowModal(msg) {
+        modalMessage.innerHTML = msg;
+        modal.show();
+    }
+    
+    const updatedPostId = [[ ${updatedId} ]];
+    if (updatedPostId) { 
+        // redirect attribute가 있는 경우
+        createAndShowModal('포스트(#' + updatedPostId + ') 수정 성공');
+    }
+    
+    const btnClose = document.querySelector('#btnClose');
+     btnClose.addEventListener('click', function(){
+            modal.hide();
+        });
+     
+     let likebtn = document.querySelector('#likebtn');
+		let disLikebtn = document.querySelector('#dislikebtn');
+		let input1 = document.querySelector('#input1');
+		let input2 = document.querySelector('#input2');
+		
+		
+		likebtn.addEventListener('click', ()=>{
+			axios.get(`/view/api/post/like?id=${postId}`)
+				.then(resp => {
+					input1.value = parseInt(input1.value);
+				});
+		});
+		
+		disLikebtn.addEventListener('click', ()=>{
+			axios.get(`/view/api/post/dislike?id=${postId}`)
+				.then(resp => {
+					input2.value = parseInt(input2.value);
+				});
+		});
+    </script>
+    <script th:src="@{ /js/reply.js }"></script>
+</th:block>
+</html>

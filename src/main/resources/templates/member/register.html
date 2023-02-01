@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Register Page</title>
+
+<!-- Custom fonts for this template-->
+<link th:href="@{/vendor/fontawesome-free/css/all.min.css}"
+    rel="stylesheet" type="text/css">
+<link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div
+                        class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">회원 가입을 해주세요!</h1>
+                            </div>
+                            <form class="user" method="post">
+                                <div class="form-group">
+                                    <input type="text" minlength="5" maxlength="12"
+                                        class="form-control form-control-user"
+                                        id="username" name="username"
+                                        placeholder="아이디를 입력해주세요" required
+                                        autofocus />
+                                </div>
+                                <div class="my-2 d-none" id="ok">
+                                    <p class="text-success">사용할 수 있는
+                                        아이디</p>
+                                </div>
+                                <div class="my-2 d-none" id="nok">
+                                    <p class="text-danger">사용할 수 없는
+                                        아이디</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="email"
+                                        class="form-control form-control-user"
+                                        id="email" name="email"
+                                        placeholder="이메일을 입력해주세요"
+                                        required />
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" 
+                                            class="form-control form-control-user"
+                                            id="password"
+                                            name="password"
+                                            placeholder="비밀번호를 입력해주세요"
+                                            required />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password"
+                                            class="form-control form-control-user"
+                                            id="repeatPassword"
+                                            placeholder="비밀번호 재입력">
+                                    </div>
+                                </div>
+                                
+                                <a> <input type="submit"
+                                    id="btnSubmit"
+                                    class="btn btn-primary btn-user btn-block"
+                                    value="회원가입">
+                                    
+
+                                </a>
+                                <hr>
+                                <a href="index.html"
+                                    class="btn btn-google btn-user btn-block">
+                                    <i class="fab fa-google fa-fw"></i>
+                                    구글로 로그인하기
+                                </a> <a href="index.html"
+                                    class="btn btn-facebook btn-user btn-block">
+                                    <i class="fab fa-facebook-f fa-fw"></i>
+                                    페이스북으로 로그인하기
+                                </a>
+                                    </form>
+                                </div>
+                            
+                            <hr>
+                            
+                            <div class="text-center">
+                                <a class="small"
+                                    th:href="@{/member/login}"> 이미 가입이 되어 있습니까? 로그인 해주세요!</a>
+                            </div>
+                            <div class="text-center">
+                                        <a class="small"
+                                            th:href="@{ / }">메인화면으로 돌아가기</a>
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script th:src="@{/js/sb-admin-2.min.js}"></script>
+    <script th:src="@{ /js/member.js }"></script>
+    <script th:src="@{ /js/scripts.js }"></script>
+
+    <!-- axios-http JS -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+    const message = document.querySelector('#message');
+    message.innerHTML = '회원가입을 축하합니다.';
+    console.log(message.value);
+    
+    </script>
+    
+    <script>
+    // 비밀번호 불일치
+    var password = document.getElementById("password")
+    , repeatPassword = document.getElementById("repeatPassword");
+    
+  function validatePassword(){
+
+
+    if(password.value != repeatPassword.value) {
+      repeatPassword.setCustomValidity("비밀번호 불일치");
+    } else {
+      repeatPassword.setCustomValidity(''); // 오류가 없으면 메시지를 빈 문자열로 설정해야한다. 오류 메시지가 비어 있지 않은 한 양식은 유효성 검사를 통과하지 않고 제출되지 않는다.
+    }
+  }
+
+  password.onchange = validatePassword;
+  repeatPassword.onkeyup = validatePassword;
+
+  
+  // 비밀번호 조합
+  $("#password").change(function(){
+        checkPassword($('#password').val());
+    });
+    function checkPassword(password){
+        
+        if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,12}$/.test(password)){            
+            alert('비밀번호는 숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
+            $('#password').val('').focus();
+            return false;
+        }    
+        var checkNumber = password.search(/[0-9]/g);
+        var checkEnglish = password.search(/[a-z]/ig);
+        if(checkNumber <0 || checkEnglish <0){
+            alert("비밀번호는 숫자와 영문자를 혼용하여야 합니다.");
+            $('#password').val('').focus();
+            return false;
+        }
+        if(/(\w)\1\1\1/.test(password)){
+            alert('비밀번호는 같은 문자를 4번 이상 사용하실 수 없습니다.');
+            $('#password').val('').focus();
+            return false;
+        
+        }
+        return true;
+    }
+
+    
+    // 아이디 길이제한
+
+  
+  
+  </script>
+
+
+
+</body>
+
+</html>

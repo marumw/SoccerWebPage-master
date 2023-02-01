@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{ layout/layout }">
+
+<div layout:fragment="content">
+	<form id = "formModify">
+	<section class="container">
+		<div class="WritngWrap">
+			<div class="WritngHeader">
+				<h2 class="title">
+					회원 정보 수정
+						<span>
+                        <button class="btn btn-success"  id = "btnModify"  style = "float : right">수정</button>
+                    </span>
+				</h2>
+			</div>
+		</div>
+		<hr>
+		<div class="WritngContainer">
+			<div class="Writngeditor">
+				<div class="ArticleWritingTitle">
+					<div class="row">
+						<div class="column_title">
+							<div class="FormSelectBox menu_candidates_selectbox">
+								<div class="FormSelectButton">
+					                    <div>
+					                    	<label for="id" class="form-label">회원번호</label> 
+											<input id="id" name="id" class="form-control" th:value="${member.id}" readonly />
+										</div>									
+										<div class="FlexableTextArea my-2">
+											<label for="username" class="form-label">아이디</label>
+											<input id="username" name="username" class="form-control" th:value="${member.username}" readonly />
+										</div>
+										<div class="FlexableTextArea my-2">
+											<label for="email" class="form-label">이메일</label>
+											<input type="email" id="email" name="email" class="form-control" th:value="${member.email}" />
+										</div>
+										<div class="form-group row my-3">
+		                                    <div class="col-sm-6 mb-3 mb-sm-0">
+		                                    	<label for="password" class="form-label">비밀번호</label>
+		                                        <input type="password" class="form-control form-control-user"
+		                                            id="password" name="password" placeholder="Password" required />
+		                                    </div>
+		                                    <div class="col-sm-6">
+		                                    	<label for="repeatPassword" class="form-label">비밀번호 확인</label>
+		                                        <input type="password" class="form-control form-control-user"
+		                                            id="repeatPassword" placeholder="Repeat Password">
+                                    		</div>
+                                		</div>
+                                  	</div>
+                                  <hr/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	</form>
+</div>
+	<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+	<script layout:fragment="script">
+	 const formModify = document.querySelector('#formModify');
+	 var password = document.getElementById("password")
+	    , confirm_password = document.getElementById("repeatPassword");
+	 
+	    // 수정 완료 버튼 찾아서 이벤트 리스너 등록.
+	    const btnUpdate = document.querySelector('#btnModify');
+	    btnUpdate.addEventListener('click', function () {
+	    	const password1 = document.querySelector('#password').value;
+	    	const email = document.querySelector('#email').value;
+	    	if (password1 == '' || email == '') {
+	    		alert('비밀번호와 이메일은 반드시 입력해야합니다.');
+	    		return;
+	    	}
+			
+	    	if(password.value != repeatPassword.value) {
+	    		alert("비밀번호 불일치");
+	    		return;
+	  	    }
+	    	
+	    	const result = confirm('수정 완료?');
+	    	if (result) {
+	    		formModify.action = '/member/update';
+	    		formModify.method = 'post';
+	    		formModify.submit();
+	    	}
+	    });
+	    
+	 // 비밀번호 조합
+        $("#password").change(function(){
+              checkPassword($('#password').val());
+          });
+          function checkPassword(password){
+              
+              if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,12}$/.test(password)){            
+                  alert('비밀번호는 숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
+                  $('#password').val('').focus();
+                  return false;
+              }    
+              var checkNumber = password.search(/[0-9]/g);
+              var checkEnglish = password.search(/[a-z]/ig);
+              if(checkNumber <0 || checkEnglish <0){
+                  alert("비밀번호는 숫자와 영문자를 혼용하여야 합니다.");
+                  $('#password').val('').focus();
+                  return false;
+              }
+              if(/(\w)\1\1\1/.test(password)){
+                  alert('비밀번호는 같은 문자를 4번 이상 사용하실 수 없습니다.');
+                  $('#password').val('').focus();
+                  return false;
+              
+              }
+              return true;
+          }
+	    
+	</script>
+</html>

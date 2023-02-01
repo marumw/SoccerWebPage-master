@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{ layout/layout }">
+
+<div layout:fragment="content">
+	<div class=" my-2">
+		<h1>회원정보</h1>
+		<div class="form-group">
+</div>
+	</div>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>회원 번호</th>
+				<th>닉네임</th>
+				<th>가입 날짜</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="member : ${ list }">
+				<td th:text="${ member.id }"></td>
+				<td><a th:href="@{ /member/detail?id={id} (id = ${ member.id }) }"
+					th:text="${ member.username }"></a></td>
+				<td
+					th:text="${ #temporals.format(member.createdTime, 'yyyy-MM-dd') }"></td>
+			</tr>
+		</tbody>
+	</table>	
+    
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+			<li class="page-item"
+				th:classappend="${1 == list.pageable.pageNumber + 1} ? 'disabled'"><a
+				class="page-link"
+				th:href="@{/member/list(page=${list.pageable.pageNumber - 1})}">이전</a></li>
+			<li class="page-item"
+				th:classappend="${i == list.pageable.pageNumber + 1} ? 'disabled'"
+				th:each="i : ${#numbers.sequence(startPage, endPage)}"><a
+				class="page-link"
+				th:href="@{/member/list(page=${i - 1})}"
+				th:text="${i}">1</a></li>
+			<li class="page-item"
+				th:classappend="${list.totalPages == list.pageable.pageNumber + 1} ? 'disabled'"><a
+				class="page-link"
+				th:href="@{/member/list(page=${list.pageable.pageNumber + 1})}">다음</a></li>
+		</ul>
+	</nav>
+	<form class="row g-3 d-flex justify-content-end"
+		th:action="@{/member/search}" method="get">
+		<div>
+			<select name="type" class="form-control">
+				<option value="t">제목</option>
+				<option value="c">내용</option>
+				<option value="tc">제목 + 내용</option>
+				<option value="a">작성자</option>
+			</select>
+		</div>
+		<div class="col-6">
+			<input type="text" class="form-control" name="keyword" 
+				placeholder="검색어"  th:value = "${param.keyword}" required autofocus />
+		</div>
+		<div class="col-2" style = "float:left">
+			<input type="submit" class="btn btn-secondary" value="검색" />
+		</div>
+	</form>
+</div>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:sec="http://thymeleaf.org/extras/spring-security"
+	layout:decorate="~{ layout/layout }">
+
+<div layout:fragment="content">
+	<div class=" my-2">
+		<h1>[[${ category }]]</h1>
+		<div class="form-group">
+</div>
+	</div>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>번호</th>
+                <th>게시판</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>수정시간</th>
+				<th>조회수</th>
+                <th>좋아요</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="post : ${ list }">
+				<td th:text="${ post.id }"></td>
+                <td th:text="${ post.category }"></td>
+				<td><a th:href="@{ /view/detail?id={id} (id = ${ post.id }) }"
+					th:text="${ post.title }"></a></td>
+				<td th:text="${ post.author }"></td>
+				<td
+					th:text="${ #temporals.format(post.modifiedTime, 'yyyy-MM-dd HH:mm') }"></td>
+				<td th:text="${ post.clickCount }"></td>
+                <td th:text="${ post.likeCount }"></td>
+			</tr>
+		</tbody>
+	</table>
+    <div th:if="${ category } == Notice" sec:authorize="hasRole('ADMIN')">
+        <form th:action="@{ /view/noticeCreate }">
+            <input type="hidden" name="category" th:value="${ category }" />
+            <button class="btn btn-success" type="submit" style="float: right"><span>글쓰기</span></button>
+        </form>
+    </div>
+    <div th:if="${ category } != Notice" sec:authorize="hasAnyRole('USER', 'ADMIN')">
+        <form th:action="@{ /view/create }">
+            <input type="hidden" name="category" th:value="${ category }" />
+            <button class="btn btn-success" type="submit" style="float: right"><span>글쓰기</span></button>
+        </form>
+    </div>
+    
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+			<li class="page-item"
+				th:classappend="${1 == list.pageable.pageNumber + 1} ? 'disabled'"><a
+				class="page-link"
+				th:href="@{/view/list(page=${list.pageable.pageNumber - 1})}">이전</a></li>
+			<li class="page-item"
+				th:classappend="${i == list.pageable.pageNumber + 1} ? 'disabled'"
+				th:each="i : ${#numbers.sequence(startPage, endPage)}"><a
+				class="page-link"
+				th:href="@{/view/list(page=${i - 1})}"
+				th:text="${i}">1</a></li>
+			<li class="page-item"
+				th:classappend="${list.totalPages == list.pageable.pageNumber + 1} ? 'disabled'"><a
+				class="page-link"
+				th:href="@{/view/list(page=${list.pageable.pageNumber + 1})}">다음</a></li>
+		</ul>
+	</nav>
+	<form class="row g-3 d-flex justify-content-end"
+		th:action="@{/view/search}" method="get">
+		<div>
+			<select name="type" class="form-control">
+				<option th:selected = "${type} == 't'" value="t">제목</option>
+				<option th:selected = "${type} == 'c'" value="c">내용</option>
+				<option th:selected = "${type} == 'tc'" value="tc">제목 + 내용</option>
+                <option th:selected = "${type} == 'a'" value="a">작성자</option>
+			</select>
+		</div>
+		<div class="col-6">
+			<input type="text" class="form-control" name="keyword" 
+				placeholder="검색어"  th:value = "${param.keyword}" required autofocus />
+		</div>
+		<div class="col-2" style = "float:left">
+			<input type="submit" class="btn btn-secondary" value="검색" />
+		</div>
+	</form>
+    
+    <div id="createModal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modalMessage">Modal 메시지</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnClose" type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">확인</button>
+                    </div>
+                </div>
+            </div>
+    </div> <!-- modal -->
+</div>
+<script layout:fragment="script" th:inline="javascript">
+    const modalMessage = document.querySelector('#modalMessage');
+    const createModal = document.querySelector('#createModal');
+    const modal = new bootstrap.Modal(createModal);
+    
+    function createAndShowModal(msg) {
+        modalMessage.innerHTML = msg;
+        modal.show();
+    }
+    
+    const createdPostId = [[ ${createdId} ]];
+    if (createdPostId) { 
+        // redirect attribute가 있는 경우
+        createAndShowModal('새 포스트(#' + createdPostId + ') 작성 성공');
+    }
+    
+    const deletedPostId = [[ ${deletedId} ]];
+    if (deletedPostId) { 
+        // redirect attribute가 있는 경우
+        createAndShowModal('포스트(#' + deletedPostId + ') 삭제 성공');
+    }
+    
+     const btnClose = document.querySelector('#btnClose');
+     btnClose.addEventListener('click', function(){
+            modal.hide();
+        });
+        
+</script>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{ layout/layout }">
+
+<div layout:fragment="content">
+	<div class=" my-2">
+		<h1>공지사항</h1>
+	</div>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>수정시간</th>
+				<th>조회수</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="post : ${ list }">
+				<td th:text="${ post.id }"></td>
+				<td><a th:href="@{ /view/detail?id={id} (id = ${ post.id }) }"
+					th:text="${ post.title }"></a></td>
+				<td th:text="${ post.author }"></td>
+				<td
+					th:text="${ #temporals.format(post.modifiedTime, 'yyyy-MM-dd') }"></td>
+				<td th:text="${ post.clickCount }"></td>
+			</tr>
+		</tbody>
+	</table>
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+			<li class="page-item"
+				th:classappend="${1 == list.pageable.pageNumber + 1} ? 'disabled'"><a
+				class="page-link"
+				th:href="@{/view/search(page=${list.pageable.pageNumber - 1}, type=${param.type}, keyword=${param.keyword})}">이전</a></li>
+			<li class="page-item"
+				th:classappend="${i == list.pageable.pageNumber + 1} ? 'disabled'"
+				th:each="i : ${#numbers.sequence(startPage, endPage)}"><a
+				class="page-link"
+				th:href="@{/view/search(page=${i - 1}, type=${param.type}, keyword=${param.keyword})}"
+				th:text="${i}">1</a></li>
+			<li class="page-item"
+				th:classappend="${list.totalPages == list.pageable.pageNumber + 1} ? 'disabled'"><a
+				class="page-link"
+				th:href="@{/view/search(page=${list.pageable.pageNumber + 1},type=${param.type}, keyword=${param.keyword})}">다음</a></li>
+		</ul>
+	</nav>
+	<form class="row g-3 d-flex justify-content-end"
+		th:action="@{/view/search}" method="get">
+		<div>
+			<select name="type" class="form-control">
+				<option th:selected = "${type} == 't'" value="t">제목</option>
+                <option th:selected = "${type} == 'c'" value="c">내용</option>
+				<option th:selected = "${type} == 'tc'" value="tc">제목 + 내용</option>
+				<option th:selected = "${type} == 'a'" value="a">작성자</option>
+			</select>
+		</div>
+		<div class="col-6" style="float: none">
+			<input type="text" class="form-control" name="keyword" 
+				placeholder="검색어"  th:value = "${param.keyword}" required autofocus />
+		</div>
+		<div class="col-2">
+			<input type="submit" class="btn btn-secondary" value="검색" />
+		</div>
+	</form>
+</div>
+</html>
